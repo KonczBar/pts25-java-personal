@@ -220,4 +220,16 @@ public class CardTest {
             fail("Can't get both normal resources and pollution");
         } catch (InvalidMoveException ignored) {}
     }
+
+    @Test
+    public void testActuallyGetResourcesIsNewInstance(){
+        checkStateString(startingCard, "(Green, 0)(Red, 1)(Yellow, 1)(Bulb, 0)" +
+                "(Gear, 0)(Car, 0)(Money, 1)(Pollution, 0)", 0);
+        Map<Resource, Integer> resources = startingCard.actuallyGetResources();
+        for (Resource resource : Resource.values()){
+            resources.replace(resource, 0);
+        }
+        checkStateString(startingCard, "(Green, 0)(Red, 1)(Yellow, 1)(Bulb, 0)" +
+                "(Gear, 0)(Car, 0)(Money, 1)(Pollution, 0)", 0);
+    }
 }
