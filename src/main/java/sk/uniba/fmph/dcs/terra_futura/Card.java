@@ -27,15 +27,6 @@ public class Card {
     private Effect lowerEffect;
 
     //for testing purposes
-    public Card(){
-        resources = new HashMap<>();
-        for (Resource resource : Resource.values()){
-            resources.put(resource, 0);
-        }
-        pollutionSpacesL = 0;
-    }
-
-    //for testing purposes
     public Card(int pollutionMax){
         resources = new HashMap<>();
         for (Resource resource : Resource.values()){
@@ -69,7 +60,7 @@ public class Card {
         return new HashMap<>(this.resources);
     }
 
-    public boolean canGetResources(Map<Resource, Integer> resources){
+    public boolean canGetResources(Map<Resource, Integer> resources) throws InvalidMoveException{
         if (resources.get(Resource.Pollution) > 0){
             for (Resource resource : Resource.values()){
                 if (resources.get(resource) != 0 && resource != Resource.Pollution){
@@ -92,7 +83,10 @@ public class Card {
         return true;
     }
 
-    public void getResources(Map<Resource, Integer> resources){
+    public void getResources(Map<Resource, Integer> resources) throws InvalidMoveException{
+        if (!canGetResources(resources)){
+            throw new InvalidMoveException("Taking resources from card, which cannot give those resources");
+        }
         for (Resource resource : Resource.values()){
             this.resources.replace(resource, this.resources.get(resource) - resources.get(resource));
             if (this.resources.get(resource) < 0){
@@ -105,10 +99,16 @@ public class Card {
     }
 
     public boolean canPutResources(Map<Resource, Integer> resources){
-        return this.resources.get(Resource.Pollution) + resources.get(Resource.Pollution) <= pollutionSpacesL + 1;
+        if (resources.get(Resource.Pollution) > 0){
+            return this.resources.get(Resource.Pollution) + resources.get(Resource.Pollution) <= pollutionSpacesL + 1;
+        }
+        return this.resources.get(Resource.Pollution) <= pollutionSpacesL;
     }
 
-    public void putResources(Map<Resource, Integer> resources){
+    public void putResources(Map<Resource, Integer> resources) throws InvalidMoveException{
+        if (!canPutResources(resources)){
+            throw new InvalidMoveException("Cannot put resources on this card");
+        }
         for (Resource resource : Resource.values()){
             this.resources.replace(resource, this.resources.get(resource) + resources.get(resource));
         }
@@ -141,6 +141,7 @@ public class Card {
             resourceList.put(pair);
         }
         JSONObject result = new JSONObject();
+        result.put("Resources", resourceList);
         result.put("Max pollution", pollutionSpacesL);
         return result.toString();
     }
