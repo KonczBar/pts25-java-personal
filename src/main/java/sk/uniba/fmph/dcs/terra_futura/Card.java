@@ -1,20 +1,5 @@
 package sk.uniba.fmph.dcs.terra_futura;
 
-/*
-resources:Resource[]
-pollutionSpacesL int
-new: upperEffect Effect
-new: lowerEffect Effect
-new: actuallyGetResources(): Map<Resource, Integer>
-canGetResources(resources: Map<Resource, Integer>): bool
-getResources(resources: Map<Resource, Integer>)
-canPutResources(resources: Map<Resource, Integer>): bool
-putResources(resources: Map<Resource, Integer>)
-check(input: Map<Resource, Integer>, output: Map<Resource, Integer>, pollution:int): bool
-checkLower(input: Map<Resource, Integer>, output: Map<Resource, Integer>, pollution:int): bool
-hasAssistance():bool
-state(): string
- */
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.HashMap;
@@ -26,7 +11,7 @@ public class Card {
     private Effect upperEffect;
     private Effect lowerEffect;
 
-    //for testing purposes
+    //for testing purposes only
     public Card(int pollutionMax){
         resources = new HashMap<>();
         for (Resource resource : Resource.values()){
@@ -35,13 +20,13 @@ public class Card {
         pollutionSpacesL = pollutionMax;
     }
 
-    //for testing purposes
+    //for testing purposes only
     public Card(Map<Resource, Integer> resources, int pollutionMax){
         this.resources = new HashMap<>(resources);
         pollutionSpacesL = pollutionMax;
     }
 
-    //for testing purposes
+    //for testing purposes only
     public Card(Map<Resource, Integer> resources, int pollutionMax, Effect upperEffect, Effect lowerEffect){
         this.resources = new HashMap<>(resources);
         for (Resource resource : Resource.values()){
@@ -74,8 +59,8 @@ public class Card {
     }
 
     public boolean canGetResources(Map<Resource, Integer> resources) throws InvalidMoveException{
-        if (resources.get(Resource.POLLUTION) > 0){
-            for (Resource resource : Resource.values()){
+        if (resources.containsKey(Resource.POLLUTION) && resources.get(Resource.POLLUTION) > 0){
+            for (Resource resource : resources.keySet()){
                 if (resources.get(resource) != 0 && resource != Resource.POLLUTION){
                     throw new InvalidMoveException("Checking if removing pollution and" +
                             " other resources is possible at once (it's not)\nPOLLUTION: "
@@ -85,11 +70,14 @@ public class Card {
             }
             return this.resources.get(Resource.POLLUTION) >= resources.get(Resource.POLLUTION);
         }
-        if (pollutionSpacesL < this.resources.get(Resource.POLLUTION)){
+        if (this.resources.containsKey(Resource.POLLUTION) && pollutionSpacesL < this.resources.get(Resource.POLLUTION)){
             return false;
         }
-        for (Resource resource : Resource.values()){
-            if (resources.get(resource) > this.resources.get(resource)){
+        for (Resource resource : resources.keySet()){
+            if (this.resources.containsKey(resource) && resources.get(resource) > this.resources.get(resource)){
+                return false;
+            }
+            else if (!this.resources.containsKey(resource) && resources.get(resource) > 0){
                 return false;
             }
         }
@@ -100,7 +88,7 @@ public class Card {
         if (!canGetResources(resources)){
             throw new InvalidMoveException("Taking resources from card, which cannot give those resources");
         }
-        for (Resource resource : Resource.values()){
+        for (Resource resource : resources.keySet()){
             this.resources.replace(resource, this.resources.get(resource) - resources.get(resource));
             if (this.resources.get(resource) < 0){
                 throw new InvalidMoveException("Tried to remove too many resources\n" +
@@ -112,8 +100,11 @@ public class Card {
     }
 
     public boolean canPutResources(Map<Resource, Integer> resources){
-        if (resources.get(Resource.POLLUTION) > 0){
+        if (resources.containsKey(Resource.POLLUTION) && resources.get(Resource.POLLUTION) > 0){
             return this.resources.get(Resource.POLLUTION) + resources.get(Resource.POLLUTION) <= pollutionSpacesL + 1;
+        }
+        if (!this.resources.containsKey(Resource.POLLUTION)){
+            return true;
         }
         return this.resources.get(Resource.POLLUTION) <= pollutionSpacesL;
     }
@@ -122,7 +113,11 @@ public class Card {
         if (!canPutResources(resources)){
             throw new InvalidMoveException("Cannot put resources on this card");
         }
-        for (Resource resource : Resource.values()){
+        for (Resource resource : resources.keySet()){
+            if (!this.resources.containsKey(resource)){
+                this.resources.put(resource, resources.get(resource));
+                continue;
+            }
             this.resources.replace(resource, this.resources.get(resource) + resources.get(resource));
         }
     }
@@ -156,7 +151,8 @@ public class Card {
         for (Resource resource : Resource.values()) {
             JSONObject pair = new JSONObject();
             pair.put("Resource", resource);
-            pair.put("Amount", resources.get(resource));
+            int amount = resources.getOrDefault(resource, 0);
+            pair.put("Amount", amount);
             resourceList.put(pair);
         }
         JSONObject result = new JSONObject();
