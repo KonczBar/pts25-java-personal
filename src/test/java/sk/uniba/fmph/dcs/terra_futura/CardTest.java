@@ -17,38 +17,38 @@ public class CardTest {
     @Before
     public void setUp(){
         Map<Resource, Integer> resources = Map.of(
-                Resource.Green, 0,
-                Resource.Red, 1,
-                Resource.Yellow, 1,
-                Resource.Bulb, 0,
-                Resource.Gear, 0,
-                Resource.Car, 0,
-                Resource.Money, 1,
-                Resource.Pollution, 0
+                Resource.GREEN, 0,
+                Resource.RED, 1,
+                Resource.YELLOW, 1,
+                Resource.BULB, 0,
+                Resource.GEAR, 0,
+                Resource.CAR, 0,
+                Resource.MONEY, 1,
+                Resource.POLLUTION, 0
         );
         startingCard = new Card(resources, 0);
 
         resources = Map.of(
-                Resource.Green, 0,
-                Resource.Red, 1,
-                Resource.Yellow, 0,
-                Resource.Bulb, 0,
-                Resource.Gear, 0,
-                Resource.Car, 0,
-                Resource.Money, 0,
-                Resource.Pollution, 2
+                Resource.GREEN, 0,
+                Resource.RED, 1,
+                Resource.YELLOW, 0,
+                Resource.BULB, 0,
+                Resource.GEAR, 0,
+                Resource.CAR, 0,
+                Resource.MONEY, 0,
+                Resource.POLLUTION, 2
         );
         pollutedCard = new Card(resources, 1);
 
         resources = Map.of(
-                Resource.Green, 0,
-                Resource.Red, 0,
-                Resource.Yellow, 0,
-                Resource.Bulb, 4,
-                Resource.Gear, 3,
-                Resource.Car, 4,
-                Resource.Money, 0,
-                Resource.Pollution, 1
+                Resource.GREEN, 0,
+                Resource.RED, 0,
+                Resource.YELLOW, 0,
+                Resource.BULB, 4,
+                Resource.GEAR, 3,
+                Resource.CAR, 4,
+                Resource.MONEY, 0,
+                Resource.POLLUTION, 1
         );
         richCard = new Card(resources, 1);
     }
@@ -70,21 +70,21 @@ public class CardTest {
 
     @Test
     public void checkStates(){
-        checkStateString(pollutedCard, "(Green, 0)(Red, 1)(Yellow, 0)(Bulb, 0)" +
-                "(Gear, 0)(Car, 0)(Money, 0)(Pollution, 2)", 1);
+        checkStateString(pollutedCard, "(GREEN, 0)(RED, 1)(YELLOW, 0)(BULB, 0)" +
+                "(GEAR, 0)(CAR, 0)(MONEY, 0)(POLLUTION, 2)", 1);
     }
 
     @Test
     public void testPuttingOnPollutedCard(){
         Map<Resource, Integer> resources = Map.of(
-                Resource.Green, 1,
-                Resource.Red, 1,
-                Resource.Yellow, 1,
-                Resource.Bulb, 0,
-                Resource.Gear, 0,
-                Resource.Car, 0,
-                Resource.Money, 0,
-                Resource.Pollution, 0
+                Resource.GREEN, 1,
+                Resource.RED, 1,
+                Resource.YELLOW, 1,
+                Resource.BULB, 0,
+                Resource.GEAR, 0,
+                Resource.CAR, 0,
+                Resource.MONEY, 0,
+                Resource.POLLUTION, 0
         );
         assertFalse(pollutedCard.canPutResources(resources));
         try{
@@ -96,14 +96,14 @@ public class CardTest {
     @Test
     public void testTakingFromPollutedCard(){
         Map<Resource, Integer> resources = Map.of(
-                Resource.Green, 0,
-                Resource.Red, 1,
-                Resource.Yellow, 0,
-                Resource.Bulb, 0,
-                Resource.Gear, 0,
-                Resource.Car, 0,
-                Resource.Money, 0,
-                Resource.Pollution, 0
+                Resource.GREEN, 0,
+                Resource.RED, 1,
+                Resource.YELLOW, 0,
+                Resource.BULB, 0,
+                Resource.GEAR, 0,
+                Resource.CAR, 0,
+                Resource.MONEY, 0,
+                Resource.POLLUTION, 0
         );
         assertFalse(pollutedCard.canGetResources(resources));
         try{
@@ -115,14 +115,14 @@ public class CardTest {
     @Test
     public void testTakingTooManyResources(){
         Map<Resource, Integer> resources = Map.of(
-                Resource.Green, 1,
-                Resource.Red, 0,
-                Resource.Yellow, 0,
-                Resource.Bulb, 0,
-                Resource.Gear, 0,
-                Resource.Car, 0,
-                Resource.Money, 0,
-                Resource.Pollution, 0
+                Resource.GREEN, 1,
+                Resource.RED, 0,
+                Resource.YELLOW, 0,
+                Resource.BULB, 0,
+                Resource.GEAR, 0,
+                Resource.CAR, 0,
+                Resource.MONEY, 0,
+                Resource.POLLUTION, 0
         );
         assertFalse(startingCard.canGetResources(resources));
         try{
@@ -133,87 +133,87 @@ public class CardTest {
 
     @Test
     public void testTakingResources(){
-        checkStateString(richCard, "(Green, 0)(Red, 0)(Yellow, 0)(Bulb, 4)" +
-                "(Gear, 3)(Car, 4)(Money, 0)(Pollution, 1)", 1);
+        checkStateString(richCard, "(GREEN, 0)(RED, 0)(YELLOW, 0)(BULB, 4)" +
+                "(GEAR, 3)(CAR, 4)(MONEY, 0)(POLLUTION, 1)", 1);
         Map<Resource, Integer> resources = Map.of(
-                Resource.Green, 0,
-                Resource.Red, 0,
-                Resource.Yellow, 0,
-                Resource.Bulb, 1,
-                Resource.Gear, 0,
-                Resource.Car, 1,
-                Resource.Money, 0,
-                Resource.Pollution, 0
+                Resource.GREEN, 0,
+                Resource.RED, 0,
+                Resource.YELLOW, 0,
+                Resource.BULB, 1,
+                Resource.GEAR, 0,
+                Resource.CAR, 1,
+                Resource.MONEY, 0,
+                Resource.POLLUTION, 0
         );
         richCard.getResources(resources);
-        checkStateString(richCard, "(Green, 0)(Red, 0)(Yellow, 0)(Bulb, 3)" +
-                "(Gear, 3)(Car, 3)(Money, 0)(Pollution, 1)", 1);
+        checkStateString(richCard, "(GREEN, 0)(RED, 0)(YELLOW, 0)(BULB, 3)" +
+                "(GEAR, 3)(CAR, 3)(MONEY, 0)(POLLUTION, 1)", 1);
 
-        checkStateString(startingCard, "(Green, 0)(Red, 1)(Yellow, 1)(Bulb, 0)" +
-                "(Gear, 0)(Car, 0)(Money, 1)(Pollution, 0)", 0);
+        checkStateString(startingCard, "(GREEN, 0)(RED, 1)(YELLOW, 1)(BULB, 0)" +
+                "(GEAR, 0)(CAR, 0)(MONEY, 1)(POLLUTION, 0)", 0);
         resources = Map.of(
-                Resource.Green, 0,
-                Resource.Red, 1,
-                Resource.Yellow, 1,
-                Resource.Bulb, 0,
-                Resource.Gear, 0,
-                Resource.Car, 0,
-                Resource.Money, 0,
-                Resource.Pollution, 0
+                Resource.GREEN, 0,
+                Resource.RED, 1,
+                Resource.YELLOW, 1,
+                Resource.BULB, 0,
+                Resource.GEAR, 0,
+                Resource.CAR, 0,
+                Resource.MONEY, 0,
+                Resource.POLLUTION, 0
         );
         startingCard.getResources(resources);
-        checkStateString(startingCard, "(Green, 0)(Red, 0)(Yellow, 0)(Bulb, 0)" +
-                "(Gear, 0)(Car, 0)(Money, 1)(Pollution, 0)", 0);
+        checkStateString(startingCard, "(GREEN, 0)(RED, 0)(YELLOW, 0)(BULB, 0)" +
+                "(GEAR, 0)(CAR, 0)(MONEY, 1)(POLLUTION, 0)", 0);
 
     }
 
     @Test
     public void testPuttingResources(){
-        checkStateString(richCard, "(Green, 0)(Red, 0)(Yellow, 0)(Bulb, 4)" +
-                "(Gear, 3)(Car, 4)(Money, 0)(Pollution, 1)", 1);
+        checkStateString(richCard, "(GREEN, 0)(RED, 0)(YELLOW, 0)(BULB, 4)" +
+                "(GEAR, 3)(CAR, 4)(MONEY, 0)(POLLUTION, 1)", 1);
         Map<Resource, Integer> resources = Map.of(
-                Resource.Green, 0,
-                Resource.Red, 0,
-                Resource.Yellow, 0,
-                Resource.Bulb, 1,
-                Resource.Gear, 0,
-                Resource.Car, 1,
-                Resource.Money, 0,
-                Resource.Pollution, 0
+                Resource.GREEN, 0,
+                Resource.RED, 0,
+                Resource.YELLOW, 0,
+                Resource.BULB, 1,
+                Resource.GEAR, 0,
+                Resource.CAR, 1,
+                Resource.MONEY, 0,
+                Resource.POLLUTION, 0
         );
         richCard.putResources(resources);
-        checkStateString(richCard, "(Green, 0)(Red, 0)(Yellow, 0)(Bulb, 5)" +
-                "(Gear, 3)(Car, 5)(Money, 0)(Pollution, 1)", 1);
+        checkStateString(richCard, "(GREEN, 0)(RED, 0)(YELLOW, 0)(BULB, 5)" +
+                "(GEAR, 3)(CAR, 5)(MONEY, 0)(POLLUTION, 1)", 1);
 
-        checkStateString(startingCard, "(Green, 0)(Red, 1)(Yellow, 1)(Bulb, 0)" +
-                "(Gear, 0)(Car, 0)(Money, 1)(Pollution, 0)", 0);
+        checkStateString(startingCard, "(GREEN, 0)(RED, 1)(YELLOW, 1)(BULB, 0)" +
+                "(GEAR, 0)(CAR, 0)(MONEY, 1)(POLLUTION, 0)", 0);
         resources = Map.of(
-                Resource.Green, 0,
-                Resource.Red, 0,
-                Resource.Yellow, 0,
-                Resource.Bulb, 1,
-                Resource.Gear, 0,
-                Resource.Car, 0,
-                Resource.Money, 1,
-                Resource.Pollution, 0
+                Resource.GREEN, 0,
+                Resource.RED, 0,
+                Resource.YELLOW, 0,
+                Resource.BULB, 1,
+                Resource.GEAR, 0,
+                Resource.CAR, 0,
+                Resource.MONEY, 1,
+                Resource.POLLUTION, 0
         );
         startingCard.putResources(resources);
-        checkStateString(startingCard, "(Green, 0)(Red, 1)(Yellow, 1)(Bulb, 1)" +
-                "(Gear, 0)(Car, 0)(Money, 2)(Pollution, 0)", 0);
+        checkStateString(startingCard, "(GREEN, 0)(RED, 1)(YELLOW, 1)(BULB, 1)" +
+                "(GEAR, 0)(CAR, 0)(MONEY, 2)(POLLUTION, 0)", 0);
 
     }
 
     @Test
     public void testTakingPollutionAndSomethingElse(){
         Map<Resource, Integer> resources = Map.of(
-                Resource.Green, 0,
-                Resource.Red, 0,
-                Resource.Yellow, 0,
-                Resource.Bulb, 1,
-                Resource.Gear, 0,
-                Resource.Car, 1,
-                Resource.Money, 0,
-                Resource.Pollution, 1
+                Resource.GREEN, 0,
+                Resource.RED, 0,
+                Resource.YELLOW, 0,
+                Resource.BULB, 1,
+                Resource.GEAR, 0,
+                Resource.CAR, 1,
+                Resource.MONEY, 0,
+                Resource.POLLUTION, 1
         );
         try{
             richCard.canGetResources(resources);
@@ -223,13 +223,13 @@ public class CardTest {
 
     @Test
     public void testActuallyGetResourcesIsNewInstance(){
-        checkStateString(startingCard, "(Green, 0)(Red, 1)(Yellow, 1)(Bulb, 0)" +
-                "(Gear, 0)(Car, 0)(Money, 1)(Pollution, 0)", 0);
+        checkStateString(startingCard, "(GREEN, 0)(RED, 1)(YELLOW, 1)(BULB, 0)" +
+                "(GEAR, 0)(CAR, 0)(MONEY, 1)(POLLUTION, 0)", 0);
         Map<Resource, Integer> resources = startingCard.actuallyGetResources();
         for (Resource resource : Resource.values()){
             resources.replace(resource, 0);
         }
-        checkStateString(startingCard, "(Green, 0)(Red, 1)(Yellow, 1)(Bulb, 0)" +
-                "(Gear, 0)(Car, 0)(Money, 1)(Pollution, 0)", 0);
+        checkStateString(startingCard, "(GREEN, 0)(RED, 1)(YELLOW, 1)(BULB, 0)" +
+                "(GEAR, 0)(CAR, 0)(MONEY, 1)(POLLUTION, 0)", 0);
     }
 }

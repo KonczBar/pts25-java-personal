@@ -70,22 +70,22 @@ public class Card {
     }
 
     public boolean isPolluted(){
-        return resources.get(Resource.Pollution) <= pollutionSpacesL;
+        return resources.get(Resource.POLLUTION) <= pollutionSpacesL;
     }
 
     public boolean canGetResources(Map<Resource, Integer> resources) throws InvalidMoveException{
-        if (resources.get(Resource.Pollution) > 0){
+        if (resources.get(Resource.POLLUTION) > 0){
             for (Resource resource : Resource.values()){
-                if (resources.get(resource) != 0 && resource != Resource.Pollution){
+                if (resources.get(resource) != 0 && resource != Resource.POLLUTION){
                     throw new InvalidMoveException("Checking if removing pollution and" +
-                            " other resources is possible at once (it's not)\nPollution: "
-                            + resources.get(Resource.Pollution) + "\n" + resource + ": "
+                            " other resources is possible at once (it's not)\nPOLLUTION: "
+                            + resources.get(Resource.POLLUTION) + "\n" + resource + ": "
                             + resources.get(resource) + "\n");
                 }
             }
-            return this.resources.get(Resource.Pollution) >= resources.get(Resource.Pollution);
+            return this.resources.get(Resource.POLLUTION) >= resources.get(Resource.POLLUTION);
         }
-        if (pollutionSpacesL < this.resources.get(Resource.Pollution)){
+        if (pollutionSpacesL < this.resources.get(Resource.POLLUTION)){
             return false;
         }
         for (Resource resource : Resource.values()){
@@ -112,10 +112,10 @@ public class Card {
     }
 
     public boolean canPutResources(Map<Resource, Integer> resources){
-        if (resources.get(Resource.Pollution) > 0){
-            return this.resources.get(Resource.Pollution) + resources.get(Resource.Pollution) <= pollutionSpacesL + 1;
+        if (resources.get(Resource.POLLUTION) > 0){
+            return this.resources.get(Resource.POLLUTION) + resources.get(Resource.POLLUTION) <= pollutionSpacesL + 1;
         }
-        return this.resources.get(Resource.Pollution) <= pollutionSpacesL;
+        return this.resources.get(Resource.POLLUTION) <= pollutionSpacesL;
     }
 
     public void putResources(Map<Resource, Integer> resources) throws InvalidMoveException{
