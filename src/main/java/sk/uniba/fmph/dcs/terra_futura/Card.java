@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Card {
-    private Map<Resource, Integer> resources;
+    private final Map<Resource, Integer> resources;
     private final int pollutionSpacesL;
     private Effect upperEffect;
     private Effect lowerEffect;
@@ -44,12 +44,21 @@ public class Card {
     //for testing purposes
     public Card(Map<Resource, Integer> resources, int pollutionMax, Effect upperEffect, Effect lowerEffect){
         this.resources = new HashMap<>(resources);
+        for (Resource resource : Resource.values()){
+            if (!this.resources.containsKey(resource)){
+                this.resources.put(resource, 0);
+            }
+        }
         pollutionSpacesL = pollutionMax;
         this.upperEffect = upperEffect;
         this.lowerEffect = lowerEffect;
     }
 
     public Card(int pollutionMax, Effect upperEffect, Effect lowerEffect){
+        resources = new HashMap<>();
+        for (Resource resource : Resource.values()){
+            resources.put(resource, 0);
+        }
         pollutionSpacesL = pollutionMax;
         this.upperEffect = upperEffect;
         this.lowerEffect = lowerEffect;
@@ -115,11 +124,17 @@ public class Card {
     }
 
     public boolean check(Map<Resource, Integer> input, Map<Resource, Integer> output, int pollution){
-        return upperEffect.check(input, output, pollution);
-    }
-
-    public boolean checkLower(Map<Resource, Integer> input, Map<Resource, Integer> output, int pollution){
-        return lowerEffect.check(input, output, pollution);
+        if (upperEffect != null) {
+            if (upperEffect.check(input, output, pollution)){
+                return true;
+            }
+        }
+        if (lowerEffect != null){
+            if (lowerEffect.check(input, output, pollution)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean hasAssistance(){
