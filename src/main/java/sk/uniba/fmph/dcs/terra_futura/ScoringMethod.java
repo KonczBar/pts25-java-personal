@@ -89,10 +89,9 @@ public class ScoringMethod {
 
     public String state() {
         if (calculatedTotal.isPresent()) {
-            return "resources: " + resources.toString() + ", points per combination: " + pointsPerCombination.toString()
-                    + ", total: " + calculatedTotal.toString();
+            return resources.toString() + pointsPerCombination.toString() + calculatedTotal.toString();
         }
 
-        return "resources: " + resources.toString() + ", points per combination: " + pointsPerCombination.toString();
+        return resources.toString() + pointsPerCombination.toString();
     }
 }
