@@ -70,7 +70,7 @@ public class Card {
     }
 
     public boolean isPolluted(){
-        return resources.get(Resource.POLLUTION) <= pollutionSpacesL;
+        return resources.get(Resource.POLLUTION) > pollutionSpacesL;
     }
 
     public boolean canGetResources(Map<Resource, Integer> resources) throws InvalidMoveException{
