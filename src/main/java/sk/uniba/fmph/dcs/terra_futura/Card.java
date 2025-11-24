@@ -69,6 +69,10 @@ public class Card {
         return new HashMap<>(this.resources);
     }
 
+    public boolean isPolluted(){
+        return resources.get(Resource.Pollution) <= pollutionSpacesL;
+    }
+
     public boolean canGetResources(Map<Resource, Integer> resources) throws InvalidMoveException{
         if (resources.get(Resource.Pollution) > 0){
             for (Resource resource : Resource.values()){
