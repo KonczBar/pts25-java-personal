@@ -10,6 +10,7 @@ import java.util.*;
 /* Changes:
     Points class replaced with Integer
     Added Optional<Integer> getCalculatedTotal
+    Added Grid to constructor
  */
 
 public class ScoringMethod {
@@ -26,7 +27,6 @@ public class ScoringMethod {
         this.calculatedTotal = Optional.empty();
     }
 
-    // maybe it should be player cards
     public void selectThisMethodAndCalculate() {
         int points = 0;
 
@@ -88,6 +88,11 @@ public class ScoringMethod {
     }
 
     public String state() {
-        return "";
+        if (calculatedTotal.isPresent()) {
+            return "resources: " + resources.toString() + ", points per combination: " + pointsPerCombination.toString()
+                    + ", total: " + calculatedTotal.toString();
+        }
+
+        return "resources: " + resources.toString() + ", points per combination: " + pointsPerCombination.toString();
     }
 }
