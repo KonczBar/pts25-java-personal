@@ -1,6 +1,5 @@
 package sk.uniba.fmph.dcs.terra_futura;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,11 +28,6 @@ class GridFake implements Grid {
 class PollutedCardFake implements Card {
 
     @Override
-    public boolean hasPollution() {
-        return true;
-    }
-
-    @Override
     public boolean isPolluted() {
         return true;
     }
@@ -45,11 +39,6 @@ class PollutedCardFake implements Card {
 }
 
 class ResourcesCardFake implements Card {
-
-    @Override
-    public boolean hasPollution() {
-        return true;
-    }
 
     @Override
     public boolean isPolluted() {

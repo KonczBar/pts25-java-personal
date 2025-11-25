@@ -41,22 +41,30 @@ public class ScoringMethod {
                 Optional<Card> c = grid.getCard(new GridPosition(i, j));
 
                 if (c.isPresent()) {
-                    // pollution is worth -1 regardless of quantity
-                    if (c.get().hasPollution()) {
-                        totalResources.put(Resource.POLLUTION, totalResources.get(Resource.POLLUTION) + 1);
-                    }
+
+                    boolean hasPollution = false;
 
                     // over-polluted cards yield no resources
                     if (!c.get().isPolluted()) {
                         Map<Resource, Integer> newResources = c.get().actuallyGetResources();
                         for (Resource resource : Resource.values()) {
                             if (resource == Resource.POLLUTION) {
+                                if (newResources.get(Resource.POLLUTION) > 0) {
+                                    hasPollution = true;
+                                }
                                 continue;
                             }
                             Integer val = newResources.get(resource);
                             totalResources.put(resource, totalResources.get(resource) + val);
 
                         }
+                    } else {
+                        hasPollution = true;
+                    }
+
+                    // pollution is worth -1 regardless of quantity
+                    if (hasPollution) {
+                        totalResources.put(Resource.POLLUTION, totalResources.get(Resource.POLLUTION) + 1);
                     }
                 }
             }
@@ -89,7 +97,7 @@ public class ScoringMethod {
 
     public String state() {
         if (calculatedTotal.isPresent()) {
-            return resources.toString() + pointsPerCombination.toString() + calculatedTotal.toString();
+            return resources.toString() + pointsPerCombination.toString() + calculatedTotal;
         }
 
         return resources.toString() + pointsPerCombination.toString();
