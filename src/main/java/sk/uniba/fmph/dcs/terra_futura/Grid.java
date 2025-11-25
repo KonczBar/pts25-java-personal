@@ -11,5 +11,5 @@ public interface Grid {
       void setActivated(GridPosition coordinate);
       void setActivationPattern(List<GridPosition> pattern);
       void endTurn();
-      void state();
+      String state();
 }
