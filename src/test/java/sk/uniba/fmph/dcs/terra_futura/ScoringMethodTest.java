@@ -2,8 +2,6 @@ package sk.uniba.fmph.dcs.terra_futura;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.*;
