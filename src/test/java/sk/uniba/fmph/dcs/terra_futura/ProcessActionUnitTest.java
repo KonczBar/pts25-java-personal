@@ -2,15 +2,11 @@ package sk.uniba.fmph.dcs.terra_futura;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-
-import static org.junit.Assert.*;
 
 public class ProcessActionUnitTest {
     @Test
