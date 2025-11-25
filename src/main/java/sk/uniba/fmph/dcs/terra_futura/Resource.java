@@ -8,5 +8,15 @@ public enum Resource{
     GEAR,
     CAR,
     MONEY,
-    POLLUTION
+    POLLUTION;
+
+    public int getValue() {
+        return switch (this) {
+            case GREEN, RED, YELLOW -> 1;
+            case BULB, GEAR -> 5;
+            case CAR -> 6;
+            case MONEY -> 0;
+            case POLLUTION -> -1;
+        };
+    }
 }
