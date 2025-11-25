@@ -14,9 +14,9 @@ public class ProcessAction {
                             cardGiver.getResources(Map.of(i.getKey(), 1));
                         }
                         else
-                            throw new InvalidMove("Not enough resources");
+                            throw new InvalidMoveException("There is not enough " + i.getKey() + " resource on card at (" + i.getValue().getX() + ", " + i.getValue().getY() + ")");
                     },
-                    () -> {throw new InvalidMove("No card on such position");});
+                    () -> {throw new InvalidMoveException("No card on position (" + i.getValue().getX() + ", " + i.getValue().getY() + ")");});
         }
         for (Pair<Resource, GridPosition> i : outputs){
             grid.getCard(i.getValue()).ifPresentOrElse((cardTaker) -> {
@@ -24,23 +24,23 @@ public class ProcessAction {
                             cardTaker.putResources(Map.of(i.getKey(), 1));
                         }
                         else
-                            throw new InvalidMove("Can't put resources on this card");
+                            throw new InvalidMoveException("Can't put " + i.getKey() +  " resource on card at (" + i.getValue().getX() + ", " + i.getValue().getY() + ")");
                     },
-                    () -> {throw new InvalidMove("No card on such position");});
+                    () -> {throw new InvalidMoveException("No card on position (" + i.getValue().getX() + ", " + i.getValue().getY() + ")");});
         }
         for (GridPosition i : pollution){
             grid.getCard(i).ifPresentOrElse((cardPolluted) -> {
-                        if (cardPolluted.canPutPollution()){
-                            cardPolluted.putPollution(1);
+                        if (cardPolluted.canPutResources(Map.of(Resource.POLLUTION, 1))){
+                            cardPolluted.putResources(Map.of(Resource.POLLUTION, 1));
                         }
                         else
-                            throw new InvalidMove("Can't put pollution on this card");
+                            throw new InvalidMoveException("Can't put POLLUTION on the card at (" + i.getX() + ", " + i.getY() + ")");
                     },
-                    () -> {throw new InvalidMove("No card on such position");});
+                    () -> {throw new InvalidMoveException("No card on position (" + i.getX() + ", " + i.getY() + ")");});
         }
     }
 
-    public boolean activateCard(Card card, Grid grid, List<Pair<Resource, GridPosition>> inputs, List<Pair<Resource, GridPosition>> outputs, List<GridPosition> pollution){
+    public void activateCard(Card card, Grid grid, List<Pair<Resource, GridPosition>> inputs, List<Pair<Resource, GridPosition>> outputs, List<GridPosition> pollution){
         Map<Resource, Integer> inputResources = new HashMap<>();
         Map<Resource, Integer> outputResources = new HashMap<>();
 
@@ -50,7 +50,6 @@ public class ProcessAction {
             else
                 inputResources.put(i.getKey(), 1);
         }
-
         for(Pair<Resource, GridPosition> i : outputs){
             if (outputResources.containsKey(i.getKey()))
                 outputResources.replace(i.getKey(), outputResources.get(i.getKey()) + 1);
@@ -58,14 +57,11 @@ public class ProcessAction {
                 outputResources.put(i.getKey(), 1);
         }
 
-        if (card.check(inputResources, outputResources, pollution.size()) || card.checkLower(inputResources, outputResources, pollution.size())){
-            try {
-                moveResources(grid, inputs, outputs, pollution);
-            } catch (InvalidMove e) {
-                throw new RuntimeException(e);
-            }
-            return true;
+        if (card.check(inputResources, outputResources, pollution.size())){
+            moveResources(grid, inputs, outputs, pollution);
         }
-        return false;
+        else{
+            throw new InvalidMoveException("That effect cannot be performed on this card");
+        }
     }
 }

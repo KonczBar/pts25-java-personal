@@ -136,6 +136,14 @@ public class Card {
         return false;
     }
 
+    public boolean checkLower(Map<Resource, Integer> input, Map<Resource, Integer> output, int pollution){
+        for (Resource i : input.keySet()){
+            if (i.getValue() > 0)
+                return check(input, output, pollution);
+        }
+        return false;
+    }
+
     public boolean hasAssistance(){
         if (upperEffect != null && upperEffect.hasAssistance()){
             return true;
