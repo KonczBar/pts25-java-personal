@@ -5,6 +5,7 @@ public enum GameState {
     TakeCardCardActivated,
     ActivateCard,
     SelectReward,
+    EndTurn,
     SelectActivationPattern,
     SelectScoringMethod,
     Finish
