@@ -1,12 +1,12 @@
 package sk.uniba.fmph.dcs.terra_futura;
 
-public enum Resource {
-    Green,
-    Red,
-    Yellow,
-    Bulb,
-    Gear,
-    Car,
-    Money,
-    Pollution
+public enum Resource{
+    GREEN,
+    RED,
+    YELLOW,
+    BULB,
+    GEAR,
+    CAR,
+    MONEY,
+    POLLUTION
 }
