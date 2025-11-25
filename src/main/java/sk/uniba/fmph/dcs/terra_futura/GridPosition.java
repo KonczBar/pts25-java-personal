@@ -1,6 +1,5 @@
 package sk.uniba.fmph.dcs.terra_futura;
 
-
 public class GridPosition {
     private int x, y;
     private final int leftConstraint = -2;
