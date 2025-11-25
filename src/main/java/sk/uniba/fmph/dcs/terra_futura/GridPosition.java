@@ -34,4 +34,11 @@ public class GridPosition {
         checkArg(y);
         this.y = y;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof GridPosition)) return false;
+
+        return x == ((GridPosition) o).getX() && y == ((GridPosition) o).getY();
+    }
 }
