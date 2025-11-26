@@ -5,6 +5,9 @@ import sk.uniba.fmph.dcs.terra_futura.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Specific resources into other specific resources, input can be empty
+ */
 public class EffectTransformationFixed implements Effect {
     private final Map<Resource, Integer> input;
     private final Map<Resource, Integer> output;
@@ -41,27 +44,4 @@ public class EffectTransformationFixed implements Effect {
     public boolean hasAssistance() {
         return false;
     }
-
-    /*@Override
-    public String state() {
-        JSONArray effectInput = new JSONArray();
-        JSONArray effectOutput = new JSONArray();
-        for (Resource resource : Resource.values()) {
-            JSONObject pair = new JSONObject();
-            pair.put("Resource", resource);
-            int amount = input.getOrDefault(resource, 0);
-            pair.put("Amount", amount);
-            effectInput.put(pair);
-            pair = new JSONObject();
-            pair.put("Resource", resource);
-            amount = output.getOrDefault(resource, 0);
-            pair.put("Amount", amount);
-            effectOutput.put(pair);
-        }
-        JSONObject result = new JSONObject();
-        result.put("Input", effectInput);
-        result.put("Output", effectOutput);
-        result.put("Pollution", pollution);
-        return result.toString();
-    }*/
 }

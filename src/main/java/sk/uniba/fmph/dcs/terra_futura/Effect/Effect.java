@@ -10,9 +10,9 @@ import java.util.Objects;
 public interface Effect {
     boolean check(Map<Resource, Integer> input, Map<Resource, Integer> output, int pollution);
     boolean hasAssistance();
-    //String state();
+    // state() removed, because Effect is not changed after initialization
 
-    public static boolean checkResource(Resource resource, Map<Resource, Integer> effectMap, Map<Resource, Integer> map){
+    static boolean checkResource(Resource resource, Map<Resource, Integer> effectMap, Map<Resource, Integer> map){
         if (!map.containsKey(resource)){
             return effectMap.get(resource) <= 0;
         }
