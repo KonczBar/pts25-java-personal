@@ -1,12 +1,11 @@
-package sk.uniba.fmph.dcs.terra_futura;
+package sk.uniba.fmph.dcs.terra_futura.Effect;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import sk.uniba.fmph.dcs.terra_futura.Resource;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class EffectTransformationFixed implements Effect{
+public class EffectTransformationFixed implements Effect {
     private final Map<Resource, Integer> input;
     private final Map<Resource, Integer> output;
     private final int pollution;

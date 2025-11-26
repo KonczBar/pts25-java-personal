@@ -2,6 +2,8 @@ package sk.uniba.fmph.dcs.terra_futura;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import sk.uniba.fmph.dcs.terra_futura.Effect.Effect;
+
 import java.util.HashMap;
 import java.util.Map;
 

@@ -1,11 +1,10 @@
-package sk.uniba.fmph.dcs.terra_futura;
+package sk.uniba.fmph.dcs.terra_futura.Effect;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import sk.uniba.fmph.dcs.terra_futura.Resource;
 
 import java.util.Map;
 
-public class EffectCreateBasic implements Effect{
+public class EffectCreateBasic implements Effect {
     private final Resource resource;
 
     public EffectCreateBasic(Resource resource){
