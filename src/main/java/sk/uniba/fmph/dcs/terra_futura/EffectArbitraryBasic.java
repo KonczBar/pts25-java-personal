@@ -48,11 +48,20 @@ public class EffectArbitraryBasic implements Effect{
         return false;
     }
 
-    @Override
+    /*@Override
     public String state() {
+        JSONArray effectInput = new JSONArray();
         JSONArray effectOutput = new JSONArray();
+        pair.put("Resource", "Arbitrary Basic");
+        pair.put("Amount", input);
+        effectInput.put(pair);
         for (Resource resource : Resource.values()) {
             JSONObject pair = new JSONObject();
+            pair.put("Resource", resource);
+            amount = input.getOrDefault(resource, 0);
+            pair.put("Amount", amount);
+            effectInput.put(pair);
+            pair = new JSONObject();
             pair.put("Resource", resource);
             int amount = output.getOrDefault(resource, 0);
             pair.put("Amount", amount);
@@ -63,5 +72,5 @@ public class EffectArbitraryBasic implements Effect{
         result.put("Output", effectOutput);
         result.put("Pollution", pollution);
         return result.toString();
-    }
+    }*/
 }

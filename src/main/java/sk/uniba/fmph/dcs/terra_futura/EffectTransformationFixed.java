@@ -43,7 +43,7 @@ public class EffectTransformationFixed implements Effect{
         return false;
     }
 
-    @Override
+    /*@Override
     public String state() {
         JSONArray effectInput = new JSONArray();
         JSONArray effectOutput = new JSONArray();
@@ -64,5 +64,5 @@ public class EffectTransformationFixed implements Effect{
         result.put("Output", effectOutput);
         result.put("Pollution", pollution);
         return result.toString();
-    }
+    }*/
 }
