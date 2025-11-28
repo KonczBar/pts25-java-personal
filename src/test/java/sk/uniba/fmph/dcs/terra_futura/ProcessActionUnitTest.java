@@ -4,6 +4,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 import org.mockito.Mockito;
+import sk.uniba.fmph.dcs.terra_futura.ProcessAction.ProcessAction;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -15,7 +16,7 @@ public class ProcessActionUnitTest {
         Card cardTaker = Mockito.mock(Card.class);
         Card cardGiver = Mockito.mock(Card.class);
         Card cardPolluted = Mockito.mock(Card.class);
-//        needs canPutResources, canGetresources and check
+//        needs canPutResources, canGetResources and check
         Mockito.when(cardTaker.canPutResources(Mockito.any())).thenReturn(true);
         Mockito.when(cardTaker.canGetResources(Mockito.any())).thenReturn(false);
         Mockito.when(cardTaker.check(Mockito.any(), Mockito.any(), Mockito.anyInt())).thenReturn(true);
@@ -65,6 +66,7 @@ public class ProcessActionUnitTest {
             System.out.println(e.getMessage());
         }
 
+        outputs.removeFirst();
         try {
             processAction.activateCard(cardPolluted, grid, inputs, outputs, pollution);
         } catch (RuntimeException e) {

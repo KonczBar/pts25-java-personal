@@ -76,7 +76,7 @@ class GridFake implements Grid {
     @Override
     public void setActivated(GridPosition coordinate) {}
     @Override
-    public void setActivationPattern(ActivationPattern pattern) {}
+    public void setActivationPattern(List<GridPosition> pattern) {}
     @Override
     public void endTurn() {}
     @Override
