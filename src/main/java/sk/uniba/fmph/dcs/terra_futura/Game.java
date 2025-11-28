@@ -107,6 +107,12 @@ public class Game {
     public boolean turnFinished(int playerId) {
         if (isOnTurn(playerId) && (gameState == GameState.ActivateCard)) {
             if (tfi.turnFinished(playerId)) {
+                if (onTurn == playerCount) {
+                    turnNumber++;
+                }
+
+                onTurn = (onTurn % playerCount) + 1;
+
                 if (turnNumber == 10) {
                     gameState = GameState.SelectActivationPattern;
                 } else {
