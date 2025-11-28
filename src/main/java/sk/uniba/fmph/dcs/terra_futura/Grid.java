@@ -1,6 +1,5 @@
 package sk.uniba.fmph.dcs.terra_futura;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface Grid {
@@ -9,7 +8,7 @@ public interface Grid {
       void putCard(GridPosition coordinate, Card card);
       boolean canBeActivated(GridPosition coordinate);
       void setActivated(GridPosition coordinate);
-      void setActivationPattern(List<GridPosition> pattern);
+      void setActivationPattern(ActivationPattern pattern);
       void endTurn();
       String state();
 }
