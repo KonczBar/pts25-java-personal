@@ -2,6 +2,8 @@ package sk.uniba.fmph.dcs.terra_futura;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import sk.uniba.fmph.dcs.terra_futura.Exceptions.InvalidMoveException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,7 +60,7 @@ public class Card {
         return resources.get(Resource.POLLUTION) > pollutionSpacesL;
     }
 
-    public boolean canGetResources(Map<Resource, Integer> resources) throws InvalidMoveException{
+    public boolean canGetResources(Map<Resource, Integer> resources) throws InvalidMoveException {
         if (resources.containsKey(Resource.POLLUTION) && resources.get(Resource.POLLUTION) > 0){
             for (Resource resource : resources.keySet()){
                 if (resources.get(resource) != 0 && resource != Resource.POLLUTION){
