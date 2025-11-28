@@ -2,6 +2,7 @@ package sk.uniba.fmph.dcs.terra_futura;
 
 import org.junit.Before;
 import org.junit.Test;
+import sk.uniba.fmph.dcs.terra_futura.Exceptions.InvalidMoveException;
 
 import java.util.ArrayList;
 import java.util.List;
