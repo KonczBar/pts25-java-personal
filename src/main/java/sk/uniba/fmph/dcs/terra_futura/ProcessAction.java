@@ -1,6 +1,7 @@
 package sk.uniba.fmph.dcs.terra_futura;
 
 import org.apache.commons.lang3.tuple.Pair;
+import sk.uniba.fmph.dcs.terra_futura.Exceptions.InvalidMoveException;
 
 import java.util.HashMap;
 import java.util.List;
