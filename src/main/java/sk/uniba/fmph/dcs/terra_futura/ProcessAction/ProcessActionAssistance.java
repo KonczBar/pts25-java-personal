@@ -19,7 +19,7 @@ public class ProcessActionAssistance {
             if (i.getKey().equals(Resource.POLLUTION)){
                 for (GridPosition j : pollution){
                     if (!grid.getCard(j).equals(Optional.of(card)))
-                        throw new InvalidMoveException("Putting pollution not on card with pollution transfer");
+                        throw new InvalidMoveException("Putting pollution not on card with assistance");
                 }
             }
             if (i.getKey().equals(Resource.POLLUTION)){
