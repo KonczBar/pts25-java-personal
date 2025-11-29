@@ -36,7 +36,7 @@ public class GridPosition {
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         if (!(o instanceof GridPosition))
             return false;
         return ((GridPosition) o).y == this.y && ((GridPosition) o).x == this.x;
