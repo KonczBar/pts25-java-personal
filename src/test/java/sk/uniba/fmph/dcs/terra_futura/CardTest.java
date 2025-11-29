@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
+import sk.uniba.fmph.dcs.terra_futura.Exceptions.InvalidMoveException;
 
 import java.util.Map;
 
