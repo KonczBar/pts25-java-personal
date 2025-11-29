@@ -3,7 +3,6 @@ package sk.uniba.fmph.dcs.terra_futura.ProcessAction;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import sk.uniba.fmph.dcs.terra_futura.Card;
 import sk.uniba.fmph.dcs.terra_futura.Grid;
@@ -16,7 +15,6 @@ import java.util.Optional;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.fail;
-import static org.junit.Assert.*;
 
 public class ProcessActionAssistanceUnitTest {
     @Test
@@ -47,20 +45,20 @@ public class ProcessActionAssistanceUnitTest {
         Mockito.when(cardAssister.hasAssistance()).thenReturn(false);
 
         Grid grid = Mockito.mock(Grid.class);
-        GridPosition takerPos = new GridPosition(1, 1);
-        GridPosition giverPos = new GridPosition(0, 0);
-        GridPosition pollutionPos = new GridPosition(0, 1);
-        Mockito.when(grid.getCard(giverPos)).thenReturn(Optional.of(cardGiver));
-        Mockito.when(grid.getCard(takerPos)).thenReturn(Optional.of(cardTaker));
-        Mockito.when(grid.getCard(pollutionPos)).thenReturn(Optional.of(cardPolluted));
+        GridPosition takerPosition = new GridPosition(1, 1);
+        GridPosition giverPosition = new GridPosition(0, 0);
+        GridPosition pollutionPosition = new GridPosition(0, 1);
+        Mockito.when(grid.getCard(giverPosition)).thenReturn(Optional.of(cardGiver));
+        Mockito.when(grid.getCard(takerPosition)).thenReturn(Optional.of(cardTaker));
+        Mockito.when(grid.getCard(pollutionPosition)).thenReturn(Optional.of(cardPolluted));
 
         ArrayList<Pair<Resource, GridPosition>> inputs = new ArrayList<>();
-        inputs.add(new ImmutablePair<>(Resource.GREEN, giverPos));
-        inputs.add(new ImmutablePair<>(Resource.GREEN, giverPos));
+        inputs.add(new ImmutablePair<>(Resource.GREEN, giverPosition));
+        inputs.add(new ImmutablePair<>(Resource.GREEN, giverPosition));
         ArrayList<Pair<Resource, GridPosition>> outputs = new ArrayList<>();
-        outputs.add(new ImmutablePair<>(Resource.CAR, takerPos));
-        ArrayList<GridPosition> pollution = new ArrayList<>(List.of(takerPos));
-        pollution.add(takerPos);
+        outputs.add(new ImmutablePair<>(Resource.CAR, takerPosition));
+        ArrayList<GridPosition> pollution = new ArrayList<>(List.of(takerPosition));
+        pollution.add(takerPosition);
 
         try {
             paa.activateCard(cardTaker, grid, cardAssister, inputs, outputs, pollution);
@@ -70,7 +68,7 @@ public class ProcessActionAssistanceUnitTest {
             fail();
         }
 
-        inputs.add(new ImmutablePair<>(Resource.RED, pollutionPos));
+        inputs.add(new ImmutablePair<>(Resource.RED, pollutionPosition));
         try {
             paa.activateCard(cardTaker, grid, cardAssister, inputs, outputs, pollution);
         } catch (RuntimeException e) {
@@ -79,7 +77,7 @@ public class ProcessActionAssistanceUnitTest {
         }
 
         inputs.removeLast();
-        outputs.add(new ImmutablePair<>(Resource.GREEN, pollutionPos));
+        outputs.add(new ImmutablePair<>(Resource.GREEN, pollutionPosition));
         try {
             paa.activateCard(cardTaker, grid, cardAssister, inputs, outputs, pollution);
         } catch (RuntimeException e) {

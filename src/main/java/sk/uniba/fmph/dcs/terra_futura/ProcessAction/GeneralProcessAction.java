@@ -10,11 +10,11 @@ public class GeneralProcessAction {
     private void moveResources(Grid grid, List<Pair<Resource, GridPosition>> inputs,
                                List<Pair<Resource, GridPosition>> outputs, List<GridPosition> pollution){
         // Check on presence of resources
-        Set<GridPosition> inputPoses = new HashSet<>();
+        Set<GridPosition> inputPositions = new HashSet<>();
         for (Pair<Resource, GridPosition> i : inputs){
-            inputPoses.add(i.getValue());
+            inputPositions.add(i.getValue());
         }
-        for (GridPosition j : inputPoses) {
+        for (GridPosition j : inputPositions) {
             Map<Resource, Integer> giverCardResources = new HashMap<>();
             for (Pair<Resource, GridPosition> i : inputs) {
                 if (i.getValue().equals(j)){
@@ -36,11 +36,11 @@ public class GeneralProcessAction {
                     });
         }
 
-        Set<GridPosition> outputPoses = new HashSet<>();
+        Set<GridPosition> outputPositions = new HashSet<>();
         for (Pair<Resource, GridPosition> i : outputs){
-            outputPoses.add(i.getValue());
+            outputPositions.add(i.getValue());
         }
-        for (GridPosition j : outputPoses){
+        for (GridPosition j : outputPositions){
             Map<Resource, Integer> takerCardResources = new HashMap<>();
             for (Pair<Resource, GridPosition> i : outputs) {
                 if (i.getValue().equals(j)){

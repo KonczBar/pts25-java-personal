@@ -36,19 +36,19 @@ public class ProcessActionUnitTest {
 
         Grid grid = Mockito.mock(Grid.class);
 //        needs getCard
-        GridPosition takerPos = new GridPosition(1, 1);
-        GridPosition giverPos = new GridPosition(0, 0);
-        GridPosition pollutionPos = new GridPosition(0, 1);
-        Mockito.when(grid.getCard(giverPos)).thenReturn(Optional.of(cardGiver));
-        Mockito.when(grid.getCard(takerPos)).thenReturn(Optional.of(cardTaker));
-        Mockito.when(grid.getCard(pollutionPos)).thenReturn(Optional.of(cardPolluted));
+        GridPosition takerPosition = new GridPosition(1, 1);
+        GridPosition giverPosition = new GridPosition(0, 0);
+        GridPosition pollutionPosition = new GridPosition(0, 1);
+        Mockito.when(grid.getCard(giverPosition)).thenReturn(Optional.of(cardGiver));
+        Mockito.when(grid.getCard(takerPosition)).thenReturn(Optional.of(cardTaker));
+        Mockito.when(grid.getCard(pollutionPosition)).thenReturn(Optional.of(cardPolluted));
 
         ArrayList<Pair<Resource, GridPosition>> inputs = new ArrayList<>();
-        inputs.add(new ImmutablePair<>(Resource.GREEN, giverPos));
+        inputs.add(new ImmutablePair<>(Resource.GREEN, giverPosition));
         ArrayList<Pair<Resource, GridPosition>> outputs = new ArrayList<>();
-        outputs.add(new ImmutablePair<>(Resource.CAR, takerPos));
-        ArrayList<GridPosition> pollution = new ArrayList<>(List.of(takerPos));
-        pollution.add(takerPos);
+        outputs.add(new ImmutablePair<>(Resource.CAR, takerPosition));
+        ArrayList<GridPosition> pollution = new ArrayList<>(List.of(takerPosition));
+        pollution.add(takerPosition);
 
         try {
             processAction.activateCard(cardTaker, grid, inputs, outputs, pollution);
@@ -58,7 +58,7 @@ public class ProcessActionUnitTest {
             fail();
         }
 
-        inputs.add(new ImmutablePair<>(Resource.RED, pollutionPos));
+        inputs.add(new ImmutablePair<>(Resource.RED, pollutionPosition));
         try {
             processAction.activateCard(cardTaker, grid, inputs, outputs, pollution);
         } catch (RuntimeException e) {
@@ -67,7 +67,7 @@ public class ProcessActionUnitTest {
         }
 
         inputs.removeLast();
-        outputs.add(new ImmutablePair<>(Resource.GREEN, pollutionPos));
+        outputs.add(new ImmutablePair<>(Resource.GREEN, pollutionPosition));
         try {
             processAction.activateCard(cardTaker, grid, inputs, outputs, pollution);
         } catch (RuntimeException e) {
