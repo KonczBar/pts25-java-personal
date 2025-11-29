@@ -2,10 +2,7 @@ package sk.uniba.fmph.dcs.terra_futura;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 // Game class
 public class Game {
@@ -16,6 +13,8 @@ public class Game {
     private int onTurn; // player who is on turn - ID corresponds to index in players
     private int turnNumber; // game ends on turn 10 (TODO: correct me if I'm wrong)
     private Optional<Integer> assistingPlayer;
+    private final GameObserver gameObserver;
+    private final Map<Integer, String> messageToPlayers;
 
     private Game(int playerCount, TerraFuturaInterface tfi) {
         if (playerCount < 2 || playerCount > 4) {
@@ -24,6 +23,12 @@ public class Game {
 
         this.tfi = tfi;
         this.playerCount = playerCount;
+        Map<Integer, Observer> observers = new HashMap<>();
+        messageToPlayers = new HashMap<>();
+        for (int i = 0; i < playerCount; i++){
+            observers.put(i, new IdObserver(i));
+        }
+        gameObserver = new GameObserver(observers);
         gameState = GameState.TakeCardNoCardDiscarded;
         onTurn = 1;
         turnNumber = 1;
@@ -34,14 +39,21 @@ public class Game {
         return playerID == onTurn;
     }
 
-    public boolean takeCard(int playerID, CardSource source, GridPosition destination) {
-        if (isOnTurn(playerID) &&
-                (gameState == GameState.TakeCardNoCardDiscarded || gameState == GameState.TakeCardCardDiscarded)) {
-            if (tfi.takeCard(playerID, source, destination)) {
+    public boolean takeCard(int playerId, CardSource source, GridPosition destination) {
+        if (!isOnTurn(playerId)){
+            messageToPlayers.clear();
+            messageToPlayers.put(playerId,"Incorrect player id");
+            gameObserver.notifyAll(messageToPlayers);
+            return false;
+        }
+        if (gameState == GameState.TakeCardNoCardDiscarded || gameState == GameState.TakeCardCardDiscarded) {
+            if (tfi.takeCard(playerId, source, destination)) {
                 gameState = GameState.ActivateCard;
                 return true;
             }
         }
+
+
         return false;
     }
 
@@ -67,7 +79,11 @@ public class Game {
             // checking assisting player
             if (otherPlayerId.isPresent()) {
                 if (otherPlayerId.get() < 1 || otherPlayerId.get() > playerCount) {
-                    return false; // non-existent assisting player
+                    messageToPlayers.clear();
+                    messageToPlayers.put(playerId,"Incorrect assisting player id");
+                    gameObserver.notifyAll(messageToPlayers);
+
+                    return false;
                 } else {
                     assistingPlayer = otherPlayerId;
                 }
@@ -94,10 +110,18 @@ public class Game {
             if (assistingPlayer.get() == playerId && gameState == GameState.SelectReward) {
                 if (tfi.selectReward(playerId, resource)) {
 
+                    messageToPlayers.clear();
+                    messageToPlayers.put(playerId,"Reward received");
+                    gameObserver.notifyAll(messageToPlayers);
+
                     assistingPlayer = Optional.empty();
                     gameState = GameState.ActivateCard;
                     return true;
                 }
+                messageToPlayers.clear();
+                messageToPlayers.put(playerId,"Incorrect resources");
+                gameObserver.notifyAll(messageToPlayers);
+                return false;
             }
         }
 
@@ -122,7 +146,6 @@ public class Game {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -134,6 +157,9 @@ public class Game {
                 return true;
             }
         }
+        messageToPlayers.clear();
+        messageToPlayers.put(playerId,"Incorrect activation pattern");
+        gameObserver.notifyAll(messageToPlayers);
         return false;
     }
 
@@ -153,6 +179,9 @@ public class Game {
             }
         }
 
+        messageToPlayers.clear();
+        messageToPlayers.put(playerId,"Incorrect scorning method");
+        gameObserver.notifyAll(messageToPlayers);
         return false;
     }
 }
