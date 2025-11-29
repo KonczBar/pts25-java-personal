@@ -1,13 +1,19 @@
-package sk.uniba.fmph.dcs.terra_futura;
+package sk.uniba.fmph.dcs.terra_futura.ProcessAction;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 import org.mockito.Mockito;
-import sk.uniba.fmph.dcs.terra_futura.ProcessAction.ProcessAction;
+import sk.uniba.fmph.dcs.terra_futura.Card;
+import sk.uniba.fmph.dcs.terra_futura.Grid;
+import sk.uniba.fmph.dcs.terra_futura.GridPosition;
+import sk.uniba.fmph.dcs.terra_futura.Resource;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+
+import static junit.framework.TestCase.*;
 
 public class ProcessActionUnitTest {
     @Test
@@ -41,7 +47,7 @@ public class ProcessActionUnitTest {
         inputs.add(new ImmutablePair<>(Resource.GREEN, giverPos));
         ArrayList<Pair<Resource, GridPosition>> outputs = new ArrayList<>();
         outputs.add(new ImmutablePair<>(Resource.CAR, takerPos));
-        ArrayList<GridPosition> pollution = new ArrayList<>();
+        ArrayList<GridPosition> pollution = new ArrayList<>(List.of(takerPos));
         pollution.add(takerPos);
 
         try {
@@ -49,12 +55,14 @@ public class ProcessActionUnitTest {
             System.out.println("Performed successfully");
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
+            fail();
         }
 
         inputs.add(new ImmutablePair<>(Resource.RED, pollutionPos));
         try {
             processAction.activateCard(cardTaker, grid, inputs, outputs, pollution);
         } catch (RuntimeException e) {
+            assertEquals("There is not enough resources on card at (0, 1)", e.getMessage());
             System.out.println(e.getMessage());
         }
 
@@ -63,6 +71,7 @@ public class ProcessActionUnitTest {
         try {
             processAction.activateCard(cardTaker, grid, inputs, outputs, pollution);
         } catch (RuntimeException e) {
+            assertEquals("Gain resources are not being put on the activated card", e.getMessage());
             System.out.println(e.getMessage());
         }
 
@@ -70,6 +79,7 @@ public class ProcessActionUnitTest {
         try {
             processAction.activateCard(cardPolluted, grid, inputs, outputs, pollution);
         } catch (RuntimeException e) {
+            assertEquals("That effect cannot be performed on this card", e.getMessage());
             System.out.println(e.getMessage());
         }
     }

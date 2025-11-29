@@ -2,6 +2,7 @@ package sk.uniba.fmph.dcs.terra_futura.ProcessAction;
 
 import org.apache.commons.lang3.tuple.Pair;
 import sk.uniba.fmph.dcs.terra_futura.*;
+import sk.uniba.fmph.dcs.terra_futura.Exceptions.InvalidMoveException;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +27,7 @@ public class ProcessActionAssistance {
             }
         }
         if (inputPollution > 1)
-            throw new InvalidMoveException("Can't move more than one pollution");
+            throw new InvalidMoveException("Can't move more than one pollution via assistance");
 
         for(Pair<Resource, GridPosition> i : outputs){
             if (!grid.getCard(i.getValue()).equals(Optional.of(card)) && !i.getKey().equals(Resource.POLLUTION))
@@ -34,6 +35,6 @@ public class ProcessActionAssistance {
         }
 
         GeneralProcessAction gpa = new GeneralProcessAction();
-        gpa.activateCard(assistingCard, grid, inputs, outputs, pollution);
+        gpa.activateCard(assistingCard, grid, inputs, outputs, pollution, true);
     }
 }

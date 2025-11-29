@@ -2,6 +2,7 @@ package sk.uniba.fmph.dcs.terra_futura.ProcessAction;
 
 import org.apache.commons.lang3.tuple.Pair;
 import sk.uniba.fmph.dcs.terra_futura.*;
+import sk.uniba.fmph.dcs.terra_futura.Exceptions.InvalidMoveException;
 
 import java.util.*;
 
@@ -52,7 +53,7 @@ public class GeneralProcessAction {
 
             grid.getCard(j).ifPresentOrElse((cardGiver) -> {
                         if (!cardGiver.canPutResources(takerCardResources)) {
-                            throw new InvalidMoveException("There is not enough resources on card at " +
+                            throw new InvalidMoveException("Can't put resources on card at " +
                                     "(" + j.getX() + ", " + j.getY() + ")");
                         }
                     },
@@ -70,7 +71,7 @@ public class GeneralProcessAction {
         }
         for (GridPosition i : pollutionMap.keySet()){
             grid.getCard(i).ifPresentOrElse((cardPolluted) -> {
-                        if (cardPolluted.canPutResources(Map.of(Resource.POLLUTION, pollutionMap.get(i)))){
+                        if (!cardPolluted.canPutResources(Map.of(Resource.POLLUTION, pollutionMap.get(i)))){
                             throw new InvalidMoveException("Can't put " + pollutionMap.get(i) +
                                     " POLLUTION on the card at (" + i.getX() + ", " + i.getY() + ")");
                         }
@@ -98,7 +99,7 @@ public class GeneralProcessAction {
 
     public void activateCard(Card card, Grid grid, List<Pair<Resource, GridPosition>> inputs,
                              List<Pair<Resource, GridPosition>> outputs,
-                             List<GridPosition> pollution) throws InvalidMoveException{
+                             List<GridPosition> pollution, boolean isAssistance) throws InvalidMoveException{
         Map<Resource, Integer> inputResources = new HashMap<>();
         Map<Resource, Integer> outputResources = new HashMap<>();
 
@@ -107,11 +108,6 @@ public class GeneralProcessAction {
                 inputResources.replace(i.getKey(), inputResources.get(i.getKey()) + 1);
             else
                 inputResources.put(i.getKey(), 1);
-        }
-
-        if (inputResources.containsKey(Resource.POLLUTION)){
-            if (inputResources.get(Resource.POLLUTION) != pollution.size())
-                throw new InvalidMoveException("Pollution transfer doesn't allow creating/destroying pollution");
         }
 
         for(Pair<Resource, GridPosition> i : outputs){
@@ -125,11 +121,23 @@ public class GeneralProcessAction {
             }
         }
 
-        if (card.check(inputResources, outputResources, pollution.size())){
-            moveResources(grid, inputs, outputs, pollution);
+        if (isAssistance){
+            if (card.checkLower(inputResources, outputResources, pollution.size())) {
+                moveResources(grid, inputs, outputs, pollution);
+            } else {
+                if (card.check(inputResources, outputResources, pollution.size())){
+                    throw new InvalidMoveException("The non-bottom effect cannot be performed via assistance");
+                }
+                else
+                    throw new InvalidMoveException("That effect cannot be performed on this card ");
+            }
         }
-        else{
-            throw new InvalidMoveException("That effect cannot be performed on this card");
+        else {
+            if (card.check(inputResources, outputResources, pollution.size())) {
+                moveResources(grid, inputs, outputs, pollution);
+            } else {
+                throw new InvalidMoveException("That effect cannot be performed on this card");
+            }
         }
     }
 }
