@@ -2,12 +2,10 @@ package sk.uniba.fmph.dcs.terra_futura;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -38,10 +36,10 @@ public class GridTest {
 
                 if (i != 0 || j != 0) {
                     assertFalse(grid.canPutCard(gp));
-                    assertThrows(IllegalArgumentException.class, () -> {grid.putCard(gp, blankCard);});
+                    assertThrows(IllegalArgumentException.class, () -> grid.putCard(gp, blankCard));
                 } else {
                     assertTrue(grid.canPutCard(gp));
-                    assertDoesNotThrow(() -> {grid.putCard(gp, blankCard);});
+                    assertDoesNotThrow(() -> grid.putCard(gp, blankCard));
                 }
             }
         }
@@ -57,7 +55,7 @@ public class GridTest {
 
         grid.putCard(startPos, blankCard);
         assertFalse(grid.canPutCard(gp2));
-        assertThrows(IllegalArgumentException.class, ()->{grid.putCard(gp2, blankCard);});
+        assertThrows(IllegalArgumentException.class, ()-> grid.putCard(gp2, blankCard));
         grid.endTurn();
         assertTrue(grid.canPutCard(gp2));
         assertDoesNotThrow(()->grid.putCard(gp2, blankCard));
@@ -75,7 +73,7 @@ public class GridTest {
         Mockito.when(invalid.getY()).thenReturn(-2);
 
         assertFalse(grid.canPutCard(invalid));
-        assertThrows(IllegalArgumentException.class, ()->{grid.putCard(invalid, blankCard);});
+        assertThrows(IllegalArgumentException.class, ()-> grid.putCard(invalid, blankCard));
 
         // testing valid position is redundant
     }
@@ -155,11 +153,11 @@ public class GridTest {
 
         grid.putCard(startPos, blankCard);
         assertTrue(grid.canBeActivated(startPos));
-        assertDoesNotThrow(()->{grid.setActivated(startPos);});
+        assertDoesNotThrow(()-> grid.setActivated(startPos));
         assertFalse(grid.canBeActivated(startPos));
-        assertThrows(IllegalArgumentException.class, ()->{grid.setActivated(startPos);});
+        assertThrows(IllegalArgumentException.class, ()-> grid.setActivated(startPos));
         assertFalse(grid.canBeActivated(gp1));
-        assertThrows(IllegalArgumentException.class, ()->{grid.setActivated(gp1);});
+        assertThrows(IllegalArgumentException.class, ()-> grid.setActivated(gp1));
 
         grid.endTurn();
 
