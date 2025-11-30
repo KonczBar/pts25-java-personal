@@ -1,5 +1,6 @@
 package sk.uniba.fmph.dcs.terra_futura;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -112,8 +113,6 @@ public class ConcreteGrid implements Grid {
         if (maxX - minX > 2 || maxY - minY > 2) {
             throw new RuntimeException("Cards occupy too much space:\n" + state());
         }
-
-
     }
 
     @Override
@@ -133,9 +132,18 @@ public class ConcreteGrid implements Grid {
         activatable.get(coordinate.getX() + 2).set(coordinate.getY() + 2, false);
     }
 
+    // does not check whether pattern activation happens on correct turn
+    // that is the responsibility of Game
     @Override
     public void setActivationPattern(ActivationPattern pattern) {
+        if (onGoingActivation) {
+            throw new RuntimeException("Attempted to set activation pattern without ending previous turn");
+        }
 
+        for (AbstractMap.SimpleEntry<Integer, Integer> x : pattern.getPattern()) {
+            activatable.get(x.getKey() + 2).set(x.getValue() + 2, true);
+        }
+        onGoingActivation = true;
     }
 
     @Override
@@ -146,6 +154,18 @@ public class ConcreteGrid implements Grid {
 
     @Override
     public String state() {
-        return "";
+        StringBuilder s = new StringBuilder();
+        s.append("Card matrix:\n");
+        for (int i = 0; i < cardMatrix.size(); i++) {
+            s.append(cardMatrix.get(i).toString());
+            s.append('\n');
+        }
+        s.append("Activatable matrix:\n");
+        for (int i = 0; i < activatable.size(); i++) {
+            s.append(activatable.get(i).toString());
+            s.append('\n');
+        }
+
+        return s.toString();
     }
 }
