@@ -1,6 +1,6 @@
 package sk.uniba.fmph.dcs.terra_futura.Effect;
 
-import sk.uniba.fmph.dcs.terra_futura.InvalidMoveException;
+import sk.uniba.fmph.dcs.terra_futura.Exceptions.InvalidMoveException;
 import sk.uniba.fmph.dcs.terra_futura.Resource;
 
 import java.util.Map;
