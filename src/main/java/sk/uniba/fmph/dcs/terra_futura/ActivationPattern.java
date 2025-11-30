@@ -3,6 +3,7 @@ package sk.uniba.fmph.dcs.terra_futura;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
@@ -28,6 +29,9 @@ public final class ActivationPattern {
         this.selected = true;
     }
 
+    public ArrayList<SimpleEntry<Integer, Integer>> getPattern() {
+        return new ArrayList<>(pattern);
+    }
 
     public boolean isSelected() {
         return this.selected;
