@@ -12,6 +12,7 @@ public class SelectReward {
         this.player = Optional.of(player);
         this.selection = new ArrayList<>(reward);
         this.card = card;
+        this.done = false;
     }
 
     public boolean canSelectReward(Resource resource) {
