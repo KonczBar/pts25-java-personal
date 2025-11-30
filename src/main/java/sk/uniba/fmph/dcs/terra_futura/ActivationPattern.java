@@ -10,7 +10,7 @@ import org.json.JSONArray;
 
 
 
-public final class ActivationPattern {
+public class ActivationPattern {
     private ArrayList<SimpleEntry<Integer, Integer>> pattern;
     private boolean selected;
     private InterfaceActivateGrid grid;
