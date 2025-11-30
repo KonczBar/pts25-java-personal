@@ -156,13 +156,13 @@ public class ConcreteGrid implements Grid {
     public String state() {
         StringBuilder s = new StringBuilder();
         s.append("Card matrix:\n");
-        for (int i = 0; i < cardMatrix.size(); i++) {
-            s.append(cardMatrix.get(i).toString());
+        for (List<Optional<Card>> matrix : cardMatrix) {
+            s.append(matrix.toString());
             s.append('\n');
         }
         s.append("Activatable matrix:\n");
-        for (int i = 0; i < activatable.size(); i++) {
-            s.append(activatable.get(i).toString());
+        for (List<Boolean> booleans : activatable) {
+            s.append(booleans.toString());
             s.append('\n');
         }
 
