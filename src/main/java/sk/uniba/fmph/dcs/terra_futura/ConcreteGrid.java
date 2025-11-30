@@ -32,8 +32,6 @@ public class ConcreteGrid implements Grid {
                 activatable.get(i).add(false);
             }
         }
-
-
     }
 
     private void resetActivation() {
@@ -42,6 +40,24 @@ public class ConcreteGrid implements Grid {
                 activatable.get(i).set(j, false);
             }
         }
+    }
+
+    private boolean hasAdjacentCard(GridPosition coordinate) {
+        int x = coordinate.getX() + 2;
+        int y = coordinate.getY() + 2;
+
+        return cardExists(x - 1, y) ||
+                cardExists(x + 1, y) ||
+                cardExists(x, y - 1) ||
+                cardExists(x, y + 1);
+    }
+
+    private boolean cardExists(int x, int y) {
+        if (x < 0 || x > 4 || y < 0 || y > 4) {
+            return false;
+        }
+
+        return cardMatrix.get(x).get(y).isPresent();
     }
 
     @Override
@@ -62,7 +78,17 @@ public class ConcreteGrid implements Grid {
             return false;
         }
 
-        // enforcing maximum 3 x 3 internal grid
+        // cards placed after first card need to be placed next to an existing card
+        if (!hasAdjacentCard(coordinate) && cardCount != 0) {
+            return false;
+        }
+
+        // cannot place card where one has already been placed
+        if (cardMatrix.get(coordinate.getX() + 2).get(coordinate.getY() + 2).isPresent()) {
+            return false;
+        }
+
+        // cannot place card outside 3 x 3 internal grid
         if (coordinate.getX() + 2 < minX) {
             if (maxX - (coordinate.getX() + 2) > 2) {
                 return false;
@@ -87,19 +113,20 @@ public class ConcreteGrid implements Grid {
             }
         }
 
-        return cardMatrix.get(coordinate.getX() + 2).get(coordinate.getY() + 2).isEmpty();
+        return true;
     }
 
     @Override
     public void putCard(GridPosition coordinate, Card card) {
         if (!canPutCard(coordinate)) {
-            throw new IllegalArgumentException("Card already present or index out of range");
+            throw new IllegalArgumentException("Attempted to place card in invalid position or without ending turn");
         }
 
         cardMatrix.get(coordinate.getX() + 2).set(coordinate.getY() + 2, Optional.of(card));
         onGoingActivation = true;
+        cardCount++;
 
-        // cards now activatalbe in cross pattern
+        // cards now activatable in cross pattern
         for (int i = 0; i < 5; i++) {
             activatable.get(coordinate.getX() + 2).set(i, true);
             activatable.get(i).set(coordinate.getY() + 2, true);
@@ -119,7 +146,7 @@ public class ConcreteGrid implements Grid {
     public boolean canBeActivated(GridPosition coordinate) {
         // returns true if the card is in a row/column where a card has been placed
         // AND a card is present at the coordinate
-        return (!activatable.get(coordinate.getX() + 2).get(coordinate.getY() + 2) &&
+        return (activatable.get(coordinate.getX() + 2).get(coordinate.getY() + 2) &&
                 cardMatrix.get(coordinate.getX() + 2).get(coordinate.getY() + 2).isPresent());
     }
 
@@ -140,8 +167,9 @@ public class ConcreteGrid implements Grid {
             throw new RuntimeException("Attempted to set activation pattern without ending previous turn");
         }
 
+        // assumes that activation pattern is stored as coordinates with values -1, 0, 1
         for (AbstractMap.SimpleEntry<Integer, Integer> x : pattern.getPattern()) {
-            activatable.get(x.getKey() + 2).set(x.getValue() + 2, true);
+            activatable.get(x.getKey() + minX + 1).set(x.getValue() + minY + 1, true);
         }
         onGoingActivation = true;
     }
