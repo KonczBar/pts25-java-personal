@@ -1,6 +1,5 @@
 package sk.uniba.fmph.dcs.terra_futura;
 
-
 public class GridPosition {
     private int x, y;
     private final int leftConstraint = -2;
@@ -34,5 +33,12 @@ public class GridPosition {
     public void setY(Integer y) {
         checkArg(y);
         this.y = y;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof GridPosition))
+            return false;
+        return ((GridPosition) o).y == this.y && ((GridPosition) o).x == this.x;
     }
 }
