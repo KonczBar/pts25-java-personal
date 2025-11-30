@@ -11,8 +11,6 @@ import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 
-
-// TODO
 public class PileTest {
     private List<Card> cardList;
     private Random random1;
