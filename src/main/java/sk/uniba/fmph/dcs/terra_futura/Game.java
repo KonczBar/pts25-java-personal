@@ -180,7 +180,7 @@ public class Game {
         }
 
         messageToPlayers.clear();
-        messageToPlayers.put(playerId,"Incorrect scorning method");
+        messageToPlayers.put(playerId,"Incorrect scoring method");
         gameObserver.notifyAll(messageToPlayers);
         return false;
     }
