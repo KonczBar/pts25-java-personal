@@ -41,4 +41,9 @@ public class GridPosition {
             return false;
         return ((GridPosition) o).y == this.y && ((GridPosition) o).x == this.x;
     }
+
+    @Override
+    public int hashCode() {
+        return 5 * x + y;
+    }
 }
